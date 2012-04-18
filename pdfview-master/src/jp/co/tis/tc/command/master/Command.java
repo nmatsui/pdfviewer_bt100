@@ -23,34 +23,42 @@ public class Command {
 				Log.d(COMMAND_MASTER_TAG, s);
 				if ("ägëÂ".equals(s)) {
 					command.setMessage("ZOOM_IN\n");
+					command.setVoice("ägëÂ");
 					break;
 				}
 				else if ("èkè¨".equals(s)) {
 					command.setMessage("ZOOM_OUT\n");
+					command.setVoice("èkè¨");
 					break;
 				}
 				else if ("ëSëÃ".equals(s)) {
 					command.setMessage("ZOOM_FIT\n");
+					command.setVoice("ëSëÃ");
 					break;
 				}
 				else if ("è„".equals(s)) {
 					command.setMessage(String.format("FLING,vx=%f,vy=%f\n", 0.0f, -VY));
+					command.setVoice("è„");
 					break;
 				}
 				else if ("â∫".equals(s)) {
 					command.setMessage(String.format("FLING,vx=%f,vy=%f\n", 0.0f, VY));
+					command.setVoice("â∫");
 					break;
 				}
 				else if ("âE".equals(s)) {
 					command.setMessage(String.format("FLING,vx=%f,vy=%f\n", VX, 0.0f));
+					command.setVoice("âE");
 					break;
 				}
 				else if ("ç∂".equals(s)) {
 					command.setMessage(String.format("FLING,vx=%f,vy=%f\n", -VX, 0.0f));
+					command.setVoice("ç∂");
 					break;
 				}
 				else {
 					command.setMessage(String.format("GOTO_PAGE,page=%d\n\n", Integer.parseInt(s)));
+					command.setVoice(String.format("%dÉyÅ[ÉW", Integer.parseInt(s)));
 					break;
 				}
 			}
@@ -59,6 +67,7 @@ public class Command {
 	}
 
 	private String message;
+	private String voice;
 	private Command() {
 		this.message = "";
 	}
@@ -67,5 +76,11 @@ public class Command {
 	}
 	private void setMessage(String message) {
 		this.message = message;
+	}
+	public String getVoice() {
+		return voice;
+	}
+	private void setVoice(String voice) {
+		this.voice = voice;
 	}
 }

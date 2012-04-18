@@ -15,11 +15,12 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener;
 import android.view.View;
 import android.widget.Button;
@@ -28,7 +29,7 @@ import android.widget.Toast;
 public class MasterActivity extends Activity {
 	private static final String COMMAND_MASTER_TAG = "jp.co.tis.tc.command.master";
 	private static final int FREQUENCY = 8000;
-	private static final float LIMIT = 2000f;
+	private static final float LIMIT = 1000f;
 	
 	private static final int REQUEST_CODE = 1;
 	
@@ -43,6 +44,8 @@ public class MasterActivity extends Activity {
 	
 	private GestureDetector gd;
 	private ScaleGestureDetector sgd;
+	
+	private TextToSpeech tts;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +67,15 @@ public class MasterActivity extends Activity {
 		});
 		gd = new GestureDetector(this, new MasterOnGestureListener());
 		sgd = new ScaleGestureDetector(this, new MasterOnScaleGestureListener());
+		
+		tts = new TextToSpeech(this, new TextToSpeech.OnInitListener(){
+			@Override
+			public void onInit(int status) {
+				if (status != TextToSpeech.SUCCESS) {
+					throw new RuntimeException("Could not initialize TTS");
+				}
+			}
+		});
 	}
 	
 	@Override
@@ -115,6 +127,15 @@ public class MasterActivity extends Activity {
 		super.onStop();
 	}
 
+	@Override
+	protected void onDestroy() {
+		if (tts != null) {
+			tts.stop();
+			tts.shutdown();
+		}
+		super.onDestroy();
+	}
+
 	private void onStartNoise() {
 		Log.d(COMMAND_MASTER_TAG, "onStartNoise");
 	}
@@ -140,8 +161,23 @@ public class MasterActivity extends Activity {
 			List<String> candidates = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 			if (candidates.size() > 0) {
 				Command command = Command.parceVoice(candidates);
+				int result = tts.setLanguage(Locale.JAPAN);
 				if (!"".equals(command.getMessage())) {
 					send(command.getMessage());
+					if (result != TextToSpeech.LANG_MISSING_DATA && result != TextToSpeech.LANG_NOT_SUPPORTED) {
+						tts.speak(command.getVoice(), TextToSpeech.QUEUE_FLUSH, null);
+					}
+					else {
+						Toast.makeText(this, "can't speakback in this locale", Toast.LENGTH_SHORT).show();
+					}
+				}
+				else {
+					if (result != TextToSpeech.LANG_MISSING_DATA && result != TextToSpeech.LANG_NOT_SUPPORTED) {
+						tts.speak(getString(R.string.recognize_error), TextToSpeech.QUEUE_FLUSH, null);
+					}
+					else {
+						Toast.makeText(this, "can't speakback in this locale", Toast.LENGTH_SHORT).show();
+					}
 				}
 				Toast.makeText(this, command.getMessage(), Toast.LENGTH_SHORT).show();
 			}
