@@ -4,7 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-
+import jp.co.tis.tc.translucent.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.webkit.WebView;

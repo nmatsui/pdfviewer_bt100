@@ -249,4 +249,6 @@
     <string name="toc_dialog_title">Table of Contents</string>
     <string name="close">Close</string>
     <string name="text_reflow">Text Reflow</string>
+    <string name="menu_app">SHOW APP</string>
+    <string name="menu_settings">SETTINGS</string>
 </resources>

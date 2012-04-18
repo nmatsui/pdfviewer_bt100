@@ -8,6 +8,8 @@ import java.util.List;
 
 import jp.co.tis.tc.command.slave.lib.AbstractCommandSlaveActivity;
 import jp.co.tis.tc.command.slave.lib.Command;
+import jp.co.tis.tc.translucent.HomeActivity;
+import jp.co.tis.tc.translucent.R;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentResolver;
@@ -1374,6 +1376,13 @@ public class OpenFileActivity extends AbstractCommandSlaveActivity implements Se
 				return undefined;
 			}
 		}
+	}
+	
+	@Override
+	protected void longPressed(KeyEvent event) {
+		Intent home = new Intent(OpenFileActivity.this, HomeActivity.class);
+		home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(home);
 	}
 	
 // #ifdef pro

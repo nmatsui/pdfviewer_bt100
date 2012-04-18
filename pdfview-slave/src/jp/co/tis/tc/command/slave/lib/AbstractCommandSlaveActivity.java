@@ -1,11 +1,11 @@
 package jp.co.tis.tc.command.slave.lib;
 
-import android.app.Activity;
+import jp.co.tis.tc.translucent.AbstractLongPressHandleActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
-public abstract class AbstractCommandSlaveActivity extends Activity implements Observer {
+public abstract class AbstractCommandSlaveActivity extends AbstractLongPressHandleActivity implements Observer {
 	private static final String COMMAND_SLAVE_TAG = "jp.co.tis.tc.command.slave";
 	private static final int PORT = 10009;
 	

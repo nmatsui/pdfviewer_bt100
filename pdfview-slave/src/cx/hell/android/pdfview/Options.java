@@ -1,5 +1,6 @@
 package cx.hell.android.pdfview;
 
+import jp.co.tis.tc.translucent.R;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
